@@ -4,23 +4,22 @@
 */
 
 // ---------- Parameters ----------
-target_ml = 180; // target volume in milliliters
-inner_d = 60; // inner diameter of cup (mm) — change to make it wider/narrower
-wall = 2; // wall thickness (mm)
-bottom = 3; // bottom thickness (mm)
-groove_width = 0.6; // depth/height of engraved fill-line groove (mm)
+TARGET_ML = 180; // target volume in milliliters
+INNER_D = 60; // inner diameter of cup (mm) — change to make it wider/narrower
+WALL = 2; // wall thickness (mm)
+BOTTOM = 3; // bottom thickness (mm)
 
 // Visual smoothness (increase for smoother cylinder, slower render)
 $fn = 180;
 
 // ---------- Derived dimensions ----------
-pi = 3.141592653589793;
-volume_mm3 = target_ml * 1000; // 1 mL = 1000 mm^3
-inner_h = volume_mm3 / (pi * pow(inner_d / 2, 2)); // height of the inner cavity
-outer_d = inner_d + 2 * wall;
-total_h = bottom + inner_h;
+PI = 3.141592653589793;
+volume_mm3 = TARGET_ML * 1000; // 1 mL = 1000 mm^3
+inner_h = volume_mm3 / (PI * pow(INNER_D / 2, 2)); // height of the inner cavity
+outer_d = INNER_D + 2 * WALL;
+total_h = BOTTOM + inner_h;
 
-inner_r = inner_d / 2;
+inner_r = INNER_D / 2;
 outer_r = outer_d / 2;
 
 // ---------- Modules ----------
@@ -35,7 +34,7 @@ module cup_body() {
     // Outer shell
     base_body();
     // Inner cavity
-    translate([0, 0, bottom])
+    translate([0, 0, BOTTOM])
       cylinder(h=inner_h, r=inner_r);
   }
 }
@@ -66,7 +65,7 @@ module curved_line(h, w, pos_h) {
 
 // Measuring line inside the cup
 module measuring_line(t, h = 1, w = 1, ratio) {
-  pos_h = inner_h * ratio + bottom;
+  pos_h = inner_h * ratio + BOTTOM;
   difference() {
     curved_line(h=h, w=w, pos_h=pos_h);
     curved_textbox(pos_h=pos_h, size=20);
