@@ -45,12 +45,18 @@ module cup_body() {
   }
 }
 
+// Helper to calculate position of character
+get_pos = function(chars, idx)
+chars % 2 == 0 ? idx < chars / 2 ? -idx - 0.5 : idx - 0.5
+: idx < floor(chars / 2) ? -idx - 1 : idx - 1;
+
 // Draw text inside the cup
 module curved_text(txt, line_w, font_size, pos_h) {
   width = font_size * TEXT_SPACE_MULTIPLIER;
   chars = len(txt);
   for (i = [0:chars - 1]) {
-    rotate([0, 0, -i * width])
+    pos = get_pos(chars, i);
+    rotate([0, 0, -pos * width])
       translate([inner_r - line_w, 0, pos_h])
         rotate([90, 0, 270])
           linear_extrude(height=1, center=true, convexity=10, slices=20, scale=1.0)
@@ -64,7 +70,8 @@ module curved_textbox(txt, pos_h, font_size) {
   half = width / 2;
   chars = len(txt);
   for (i = [0:chars - 1]) {
-    rotate([0, 0, -i * width])
+    pos = get_pos(chars, i);
+    rotate([0, 0, -pos * width])
       translate([inner_r - half, -half, pos_h - half])
         cube(width);
   }
@@ -101,8 +108,8 @@ module rim_lip() {
 
 // ---------- Assembly ----------
 union() {
-  %cup_body();
-  %rim_lip();
+  cup_body();
+  rim_lip();
   for (i = [0:len(MEASURINGS) - 1]) {
     ml = MEASURINGS[i];
     ratio = ml / TARGET_ML;
