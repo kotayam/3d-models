@@ -1,11 +1,6 @@
 /*
   180 mL Rice Measuring Cup (parametric)
-  Author: ChatGPT
   Units: millimeters
-  How to use:
-    1) Open in OpenSCAD (free).
-    2) Press F5 to preview. Adjust parameters below.
-    3) Press F6 to render, then File → Export → Export as STL.
 */
 
 // ---------- Parameters ----------
@@ -29,10 +24,12 @@ inner_r = inner_d / 2;
 outer_r = outer_d / 2;
 
 // ---------- Modules ----------
+// Draw the base cylinder
 module base_body() {
   cylinder(h=total_h, r=outer_r);
 }
 
+// Draw the cup
 module cup_body() {
   difference() {
     // Outer shell
@@ -43,6 +40,7 @@ module cup_body() {
   }
 }
 
+// Draw text inside the cup
 module curved_text(t, w, pos_h) {
   translate([inner_r - 1, 0, pos_h])
     rotate([90, 0, 270])
@@ -50,12 +48,14 @@ module curved_text(t, w, pos_h) {
         text(text=t, halign="center", valign="center");
 }
 
+// Draw a textbox inside the cup
 module curved_textbox(pos_h, size) {
   half = size / 2;
   translate([inner_r - half, -half, pos_h - half])
     cube(size);
 }
 
+// Draw a curved line inside the cup
 module curved_line(h, w, pos_h) {
   translate([0, 0, pos_h])
     difference() {
@@ -64,6 +64,7 @@ module curved_line(h, w, pos_h) {
     }
 }
 
+// Measuring line inside the cup
 module measuring_line(t, h = 1, w = 1, ratio) {
   pos_h = inner_h * ratio + bottom;
   difference() {
@@ -73,7 +74,7 @@ module measuring_line(t, h = 1, w = 1, ratio) {
   curved_text(t=t, w=w, pos_h=pos_h);
 }
 
-// Small rounded-ish lip at the rim (optional, cosmetic)
+// Small rounded-ish lip at the rim
 module rim_lip() {
   lip_h = 1;
   translate([0, 0, total_h - lip_h])
