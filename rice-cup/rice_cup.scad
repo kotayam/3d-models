@@ -17,7 +17,9 @@ MLS = [45, 135]; // mililiters to show
 HALF_ML = ["90", "1/2"]; // half as two text on opposing sides
 
 // Visual smoothness (increase for smoother cylinder, slower render)
-$fn = 180;
+$fs = 0.5;
+$fa = 1;
+$fn = 0;
 
 // ---------- Derived dimensions ----------
 PI = 3.141592653589793;
